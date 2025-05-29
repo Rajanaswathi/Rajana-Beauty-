@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion';
-import { useIntersectionObserver } from 'react-intersection-observer';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles, Star, Clock, Users, Heart, Phone, Calendar } from 'lucide-react';
 
@@ -19,8 +19,10 @@ const Index = () => {
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
   const heroYOffset = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
   
-  const introRef = useRef(null);
-  const introInView = useInView(introRef, { once: false, threshold: 0.3 });
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    rootMargin: '-100px',
+  });
   
   const heroImageUrl = "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80";
   
@@ -61,22 +63,12 @@ const Index = () => {
           scale: heroScale,
           y: heroYOffset
         }}
-        className="relative h-[100vh] flex items-center justify-center text-center bg-cover bg-center bg-no-repeat -mt-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        className="relative h-[100vh] flex items-center justify-center text-center bg-cover bg-center bg-no-repeat"
       >
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroImageUrl})` }}
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-brand-deep-plum/80"></div>
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-black/60"></div> {/* Darker overlay for better text contrast */}
         </div>
-
+        
         <div className="relative z-10 p-6 max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -104,20 +96,20 @@ const Index = () => {
             </motion.div>
 
             <motion.h1 
-              className="font-serif font-bold mb-6 leading-tight shadow-text text-white"
+              className="font-serif font-bold mb-6 leading-tight text-white drop-shadow-lg" // Added drop-shadow
               style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <span className="block">Experience True</span>
+              <span className="block text-white">Experience True</span> {/* Explicit white color */}
               <span className="block bg-gradient-to-r from-brand-rose-gold to-brand-ivory bg-clip-text text-transparent">
                 Elegance & Rejuvenation
               </span>
             </motion.h1>
 
             <motion.p 
-              className="text-xl md:text-2xl text-brand-ivory/90 mb-10 font-light max-w-2xl mx-auto"
+              className="text-xl md:text-2xl text-white mb-10 font-light max-w-2xl mx-auto drop-shadow-md" // Added drop-shadow
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -177,13 +169,13 @@ const Index = () => {
 
       {/* Elegant Intro Section with Reveal Animation */}
       <motion.section 
-        ref={introRef}
+        ref={ref}
         className="py-20 md:py-28 bg-brand-ivory overflow-hidden"
       >
         <div className="container mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8 }}
             className="text-center relative z-10 mb-16"
           >
@@ -198,7 +190,7 @@ const Index = () => {
             <motion.h2 
               className="text-4xl md:text-5xl font-serif font-semibold text-brand-deep-plum mb-6"
               initial={{ opacity: 0, y: 20 }}
-              animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
               Welcome to Rajana Beauty
@@ -207,7 +199,7 @@ const Index = () => {
             <motion.div
               className="max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
-              animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <p className="text-lg text-brand-dark-gray/80 mb-8 leading-relaxed">
@@ -220,7 +212,7 @@ const Index = () => {
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <Link to="/services">
@@ -240,7 +232,7 @@ const Index = () => {
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 40 }}
-            animate={introInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.div 
@@ -592,7 +584,7 @@ const Index = () => {
         </div>
       </motion.section>
       
-      {/* Replace the problematic style tag */}
+      {/* Replace the intersection observer usage */}
       <style dangerouslySetInnerHTML={{ __html: `
         .testimonial-swiper {
           padding: 60px 0 40px;

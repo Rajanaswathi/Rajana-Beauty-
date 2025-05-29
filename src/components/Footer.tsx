@@ -35,9 +35,20 @@ const Footer: React.FC = () => {
           </ul>
         </div>
       </div>
-      <div className="mt-8 pt-8 border-t border-brand-rose-gold/30 text-center text-sm text-brand-ivory/70">
-        <p>&copy; {new Date().getFullYear()} Rajana Beauty Parlour. All Rights Reserved.</p>
-        <p className="mt-1">Designed with <span className="text-brand-rose-gold">&hearts;</span> by Dream Team</p>
+      <div className="mt-8 pt-8 border-t border-brand-rose-gold text-center">
+        <p className="text-white text-base">&copy; {new Date().getFullYear()} Rajana Beauty Parlour. All Rights Reserved.</p>
+        <p className="mt-2 text-white text-base">
+          Designed and developed by{' '}
+          <span className="text-brand-rose-gold font-bold">Swathi Rajana</span>{' '}from{' '}
+          <a 
+            href="https://www.thedreamteamservices.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-brand-rose-gold font-bold hover:underline inline-block"
+          >
+            Dream Team
+          </a>
+        </p>
       </div>
     </footer>
   );
